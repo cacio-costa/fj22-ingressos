@@ -1,6 +1,8 @@
 package br.com.caelum.ingresso.dao;
 
 import br.com.caelum.ingresso.model.Sala;
+
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

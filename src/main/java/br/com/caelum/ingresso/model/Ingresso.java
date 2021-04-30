@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,21 +21,30 @@ public class Ingresso {
 	private Integer id;
 	private BigDecimal preco = BigDecimal.ZERO;
 
+	@Enumerated(EnumType.STRING)
+	private TipoDeIngresso tipoDeIngresso;
+
 	@ManyToOne
 	private Sessao sessao;
-	
+
+	@ManyToOne
+	private Lugar lugar;
+
 	/**
 	 * JPA (Hibernate) precisam do construtor padrão.
+	 * 
 	 * @deprecated
 	 */
 	public Ingresso() {
-		
+
 	}
-	
+
 	// SOLID: Open para extensão, Close para alteração: Open-Close Principle
-	public Ingresso(Sessao sessao, Desconto desconto) {
+	public Ingresso(Sessao sessao, TipoDeIngresso tipoDeIngresso, Lugar lugar) {
 		this.sessao = sessao;
-		this.preco = desconto.aplicaDescontoSobre(sessao.getPreco());
+		this.tipoDeIngresso = tipoDeIngresso;
+		this.lugar = lugar;
+		this.preco = tipoDeIngresso.aplicaDescontoSobre(sessao.getPreco());
 	}
 
 	public Integer getId() {
@@ -58,6 +69,22 @@ public class Ingresso {
 
 	public void setSessao(Sessao sessao) {
 		this.sessao = sessao;
+	}
+
+	public TipoDeIngresso getTipoDeIngresso() {
+		return tipoDeIngresso;
+	}
+
+	public void setTipoDeIngresso(TipoDeIngresso tipoDeIngresso) {
+		this.tipoDeIngresso = tipoDeIngresso;
+	}
+
+	public Lugar getLugar() {
+		return lugar;
+	}
+
+	public void setLugar(Lugar lugar) {
+		this.lugar = lugar;
 	}
 
 }

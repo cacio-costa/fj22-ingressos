@@ -8,15 +8,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import br.com.caelum.ingresso.model.descontos.DescontoParaBancos;
-import br.com.caelum.ingresso.model.descontos.DescontoParaEstudante;
-import br.com.caelum.ingresso.model.descontos.SemDesconto;
-
 public class IngressoTest {
 	
 	private Filme clubeDaLuta;
 	private Sala salaNormal;
 	private Sessao sessao;
+	private Lugar lugar;
 
 	@Before
 	public void preparaSessao() {
@@ -24,12 +21,13 @@ public class IngressoTest {
 		salaNormal = new Sala("Sala Normal", new BigDecimal("17.00"));
 		
 		sessao = new Sessao(LocalTime.now(), clubeDaLuta, salaNormal);
+		lugar = new Lugar("A", 1);
 	}
 
 	@Test
 	public void deveAplicarDescontoDeCinquentaPorCentoQuandoForParaEstudante() {
 		// ARRANJAR o cenário
-		Ingresso ingressoParaEstudante = new Ingresso(sessao, new DescontoParaEstudante());
+		Ingresso ingressoParaEstudante = new Ingresso(sessao, TipoDeIngresso.ESTUDANTE, lugar);
 
 		// AGIR na funcionalidade
 		BigDecimal precoDoIngresso = ingressoParaEstudante.getPreco();
@@ -42,7 +40,7 @@ public class IngressoTest {
 	@Test
 	public void deveAplicarDescontoDeTrintaPorCentoQuandoForParaBancario() {
 		// ARRANJAR o cenário
-		Ingresso ingressoParaEstudante = new Ingresso(sessao, new DescontoParaBancos());
+		Ingresso ingressoParaEstudante = new Ingresso(sessao, TipoDeIngresso.BANCARIO, lugar);
 
 		// AGIR na funcionalidade
 		BigDecimal precoDoIngresso = ingressoParaEstudante.getPreco();
@@ -55,7 +53,7 @@ public class IngressoTest {
 	@Test
 	public void naoDeveAplicarDescontoQuantoNaoTiverDesconto() {
 		// ARRANJAR o cenário
-		Ingresso ingressoParaEstudante = new Ingresso(sessao, new SemDesconto());
+		Ingresso ingressoParaEstudante = new Ingresso(sessao, TipoDeIngresso.INTEIRO, lugar);
 
 		// AGIR na funcionalidade
 		BigDecimal precoDoIngresso = ingressoParaEstudante.getPreco();

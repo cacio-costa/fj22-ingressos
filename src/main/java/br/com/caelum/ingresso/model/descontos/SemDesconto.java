@@ -9,4 +9,7 @@ public class SemDesconto implements Desconto {
 		return precoOrinal;
 	}
 
+	public String getDescricao() {
+		return "Inteiro";
+	}
 }
